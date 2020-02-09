@@ -3,17 +3,17 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/client/index.js',
+  entry: ['@babel/polyfill', './src/client/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
+
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -30,7 +30,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(s*)css$/,
+        test: /\.css|.scss$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -43,17 +43,12 @@ module.exports = {
         test: /\.(png|gif|jpg)$/,
         use: [
           {
-            'loader': 'file-loader',
-            options: {
-              name: 'assets/[hash].[ext]',
-            },
+            loader: 'file-loader',
+            options: { name: 'assets/[hash].[ext]' },
           },
         ],
       },
     ],
-  },
-  devServer: {
-    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebPackPlugin({
